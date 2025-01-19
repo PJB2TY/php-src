@@ -80,11 +80,11 @@ enum pdo_fetch_type {
 	PDO_FETCH__MAX /* must be last */
 };
 
-#define PDO_FETCH_FLAGS     0xFFFF0000  /* fetchAll() modes or'd to PDO_FETCH_XYZ */
-#define PDO_FETCH_GROUP     0x00010000  /* fetch into groups */
-#define PDO_FETCH_UNIQUE    0x00030000  /* fetch into groups assuming first col is unique */
-#define PDO_FETCH_CLASSTYPE 0x00040000  /* fetch class gets its class name from 1st column */
-#define PDO_FETCH_SERIALIZE 0x00080000  /* fetch class instances by calling serialize */
+#define PDO_FETCH_FLAGS      0xFFFF0000  /* fetchAll() modes or'd to PDO_FETCH_XYZ */
+#define PDO_FETCH_GROUP      0x00010000  /* fetch into groups */
+#define PDO_FETCH_UNIQUE     0x00030000  /* fetch into groups assuming first col is unique */
+#define PDO_FETCH_CLASSTYPE  0x00040000  /* fetch class gets its class name from 1st column */
+#define PDO_FETCH_SERIALIZE  0x00080000  /* fetch class instances by calling serialize */
 #define PDO_FETCH_PROPS_LATE 0x00100000  /* fetch props after calling ctor */
 
 /* fetch orientation for scrollable cursors */
@@ -613,18 +613,13 @@ struct _pdo_stmt_t {
 		int column;
 		struct {
 			zval ctor_args;            /* freed */
-			zend_fcall_info fci;
 			zend_fcall_info_cache fcc;
-			zval retval;
+			zend_fcall_info fci;
 			zend_class_entry *ce;
 		} cls;
 		struct {
-			zval fetch_args;           /* freed */
-			zend_fcall_info fci;
+			zval dummy; /* This exists due to alignment reasons with fetch.into and fetch.cls.ctor_args */
 			zend_fcall_info_cache fcc;
-			zval object;
-			zval function;
-			zval *values;              /* freed */
 		} func;
 		zval into;
 	} fetch;

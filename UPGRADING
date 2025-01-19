@@ -109,6 +109,10 @@ PHP 8.5 UPGRADE NOTES
   . IntlDateFormatter::setTimeZone()/datefmt_set_timezone()
     throws an IntlException on uninitialised classes/clone failures.
 
+  . grapheme_extract() properly assigns $next value when skipping over
+    invalid starting bytes. Previously there were cases where it would
+    point to the start of the grapheme boundary instead of the end.
+
 - PCNTL:
   . pcntl_exec() now has a formal return type of false.
 
@@ -128,6 +132,12 @@ PHP 8.5 UPGRADE NOTES
     an invalid file descriptor.
   . posix_fpathconf checks invalid file descriptors and sets
     last_error to EBADF and raises an E_WARNING message.
+
+- Session:
+  . session_start is stricter in regard of the option argument.
+    it throws a ValueError if the whole is not a hashmap or
+    a TypeError if read_on_close value is not a valid type
+    compatible with int.
 
 - Sockets:
   . socket_create_listen, socket_bind and socket_sendto throw a
@@ -159,6 +169,10 @@ PHP 8.5 UPGRADE NOTES
 
 - DOM:
   . Added Dom\Element::insertAdjacentHTML().
+
+- Enchant:
+  . Added enchant_dict_remove_from_session() to remove a word added to the
+    spellcheck session via enchant_dict_add_to_session().
 
 - PGSQL:
   . pg_close_stmt offers an alternative way to close a prepared
